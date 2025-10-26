@@ -25,7 +25,7 @@ class ChangeTextTest {
     private lateinit var device: UiDevice
     private val textToSet = "Netology"
     private val textToSet2 = "    "
-   // private val textToBeChanged = R.id.textToBeChanged
+    val inputText = "Text To Check"
 
 
 //    @Test
@@ -49,8 +49,31 @@ class ChangeTextTest {
 //        ).click()
 //    }
 
+//    @Test
+//    fun testEmptyLine() {
+//        // Press home
+//        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+//        device.pressHome()
+//
+//        // Wait for launcher
+//        val launcherPackage = device.launcherPackageName
+//        device.wait(Until.hasObject(By.pkg(launcherPackage)), TIMEOUT)
+//
+//        val context = ApplicationProvider.getApplicationContext<Context>()
+//        val intent = context.packageManager.getLaunchIntentForPackage(MODEL_PACKAGE)
+//        context.startActivity(intent)
+//        device.wait(Until.hasObject(By.pkg(MODEL_PACKAGE)), TIMEOUT)
+//
+//        val textBefore = device.findObject(By.res(MODEL_PACKAGE, "textToBeChanged")).text
+//        device.findObject(By.res(MODEL_PACKAGE, "userInput")).text = textToSet2;
+//        device.findObject(By.res(MODEL_PACKAGE, "buttonChange")).click();
+//        val textAfter  = device.findObject(By.res(MODEL_PACKAGE, "textToBeChanged")).text;
+//
+//        assertEquals(textBefore, textAfter )
+//    }
+
     @Test
-    fun testEmptyLine() {
+    fun testNewActivityWithText() {
         // Press home
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         device.pressHome()
@@ -58,19 +81,20 @@ class ChangeTextTest {
         // Wait for launcher
         val launcherPackage = device.launcherPackageName
         device.wait(Until.hasObject(By.pkg(launcherPackage)), TIMEOUT)
-        waitForPackage(SETTINGS_PACKAGE)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = context.packageManager.getLaunchIntentForPackage(MODEL_PACKAGE)
         context.startActivity(intent)
         device.wait(Until.hasObject(By.pkg(MODEL_PACKAGE)), TIMEOUT)
 
-        val textBefore = device.findObject(By.res(MODEL_PACKAGE, "textToBeChanged")).text
-        device.findObject(By.res(MODEL_PACKAGE, "userInput")).text = textToSet2;
-        device.findObject(By.res(MODEL_PACKAGE, "buttonChange")).click();
-        val textAfter  = device.findObject(By.res(MODEL_PACKAGE, "textToBeChanged")).text;
-        assertEquals(textBefore, textAfter )
-    }
+        device.findObject(By.res(MODEL_PACKAGE, "userInput")).text = inputText
+        device.findObject(By.res(MODEL_PACKAGE, "buttonActivity")).click()
+        device.wait(Until.hasObject(By.res(MODEL_PACKAGE, "AppCompatTextView")), TIMEOUT)
+        val resultText = device.findObject(By.res(MODEL_PACKAGE, "AppCompatTextView")).text
+
+        assertEquals(inputText, resultText)
+        }
+
 //    @Test
 //    fun testChangeText() {
 //        // Press home
